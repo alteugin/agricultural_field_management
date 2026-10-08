@@ -1,6 +1,7 @@
 # План реалізації
 
 ## Стек
+
 - Vite + React 19 + TypeScript (strict). React 19 бо react-leaflet 5 його вимагає; ТЗ дозволяє 18+
 - Tailwind CSS v4 (без UI-кіту)
 - react-leaflet 5 + Leaflet 1.9
@@ -9,9 +10,10 @@
 - Vitest — unit-тести тільки для `src/lib`
 
 ## Структура
-```
+
+```text
 src/
-  data/fields.ts        # 4-5 полів (GeoJSON FeatureCollection)
+  data/fields.json      # 5 полів (GeoJSON FeatureCollection)
   types/                # Field, MonitoringPoint, PointType
   store/                # useFieldsStore, usePointsStore
   lib/geo.ts            # pointInField, toMGRS, areaHa
@@ -21,8 +23,9 @@ src/
 ```
 
 ## Етапи
+
 1. [x] Каркас: Vite, TS strict, Tailwind, ESLint, Vitest
-2. [ ] Типи + mock-поля
+2. [x] Типи + mock-поля
 3. [ ] `lib/` + тести
 4. [ ] Стори (persist з версією та безпечним відновленням)
 5. [ ] Карта: поля, активне поле, вибір кліком, fitBounds, назва/площа
@@ -34,6 +37,7 @@ src/
 11. [ ] README
 
 ## Рішення та припущення
-- Площу рахуємо turf-ом, а не беремо з `properties`: у прикладі ТЗ `area: 45.2`, а полігон реально ~78.8 га
+
+- Площу рахуємо turf-ом, а не беремо з `properties`: у прикладі ТЗ `area: 45.2`, а полігон реально ~78.7 га
 - Список точок: за замовчуванням активне поле, з перемикачем «всі поля»
 - Обсяг — строго ТЗ
