@@ -20,7 +20,8 @@ src/
   lib/geo.ts            # lng/lat swap, point-in-polygon, MGRS
   lib/points.ts         # filter / search / sort
   components/map/       # MapView, FieldsLayer, PointsLayer, іконки
-  components/panel/     # FieldList, PointForm, PointsList, PointsFilters
+  components/panel/     # FieldList, PointsPanel, PointsFilters, PointsListItem
+  components/points/    # PointForm, Coordinates, PointTypeIcon, стилі типів
 ```
 
 ## Етапи
@@ -32,7 +33,7 @@ src/
 5. [x] Карта: поля, активне поле, вибір кліком, fitBounds, назва/площа
 6. [x] Додавання точки: перевірка межі поля, форма, WGS84 + MGRS
 7. [x] Іконки за типом, видалення (з undo в тості)
-8. [ ] Панель: фільтр за типом, пошук, сортування, активне поле / всі
+8. [x] Панель: фільтр за типом, пошук, сортування, активне поле / всі
 9. [ ] Адаптив: desktop sidebar, tablet drawer
 10. [ ] Обробка помилок: ErrorBoundary, MGRS, storage, порожні стани
 11. [ ] README

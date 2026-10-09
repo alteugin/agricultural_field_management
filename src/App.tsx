@@ -1,5 +1,6 @@
 import { MapView } from './components/map/MapView'
 import { FieldList } from './components/panel/FieldList'
+import { PointsPanel } from './components/panel/PointsPanel'
 import { Toaster } from './components/Toaster'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
         </header>
         <div className="flex-1 overflow-y-auto">
           <FieldList />
+          <PointsPanel />
         </div>
       </aside>
       <main className="relative min-h-0 flex-1">
