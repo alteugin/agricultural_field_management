@@ -11,7 +11,9 @@ export type NewPoint = Omit<MonitoringPoint, 'id' | 'createdAt'>
 interface PointsState {
   points: MonitoringPoint[]
   addPoint: (input: NewPoint) => MonitoringPoint
-  removePoint: (id: string) => void
+  /** Returns the removed point so the caller can offer undo. */
+  removePoint: (id: string) => MonitoringPoint | undefined
+  restorePoint: (point: MonitoringPoint) => void
 }
 
 /**
@@ -33,7 +35,7 @@ const safeLocalStorage: StateStorage = {
 
 export const usePointsStore = create<PointsState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       points: [],
       addPoint: (input) => {
         const point: MonitoringPoint = {
@@ -45,7 +47,16 @@ export const usePointsStore = create<PointsState>()(
         set((state) => ({ points: [...state.points, point] }))
         return point
       },
-      removePoint: (id) => set((state) => ({ points: state.points.filter((point) => point.id !== id) })),
+      removePoint: (id) => {
+        const removed = get().points.find((point) => point.id === id)
+        if (removed) set((state) => ({ points: state.points.filter((point) => point.id !== id) }))
+        return removed
+      },
+      restorePoint: (point) => {
+        // Guard against a double undo
+        if (get().points.some((existing) => existing.id === point.id)) return
+        set((state) => ({ points: [...state.points, point] }))
+      },
     }),
     {
       name: 'field-monitoring:points',

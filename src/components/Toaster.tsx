@@ -16,6 +16,18 @@ export function Toaster() {
           }`}
         >
           <span className="flex-1">{toast.message}</span>
+          {toast.action && (
+            <button
+              type="button"
+              onClick={() => {
+                toast.action?.onClick()
+                dismiss(toast.id)
+              }}
+              className="-my-0.5 rounded px-1.5 py-0.5 font-medium text-amber-300 hover:bg-white/10"
+            >
+              {toast.action.label}
+            </button>
+          )}
           <button
             type="button"
             onClick={() => dismiss(toast.id)}
