@@ -18,6 +18,11 @@ export function polygonToLatLngs(polygon: Polygon): LatLngTuple[][] {
   return polygon.coordinates.map((ring) => ring.map(([lng = 0, lat = 0]) => [lat, lng]))
 }
 
+/** 6 decimal places is ~10 cm, well beyond what a click on the map can target. */
+export function roundCoordinate(value: number): number {
+  return Math.round(value * 1e6) / 1e6
+}
+
 export function isPointInPolygon({ lat, lng }: LatLng, polygon: Polygon): boolean {
   return booleanPointInPolygon([lng, lat], polygon)
 }

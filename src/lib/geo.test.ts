@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { Polygon } from 'geojson'
-import { isPointInPolygon, polygonToLatLngs, toMGRS } from './geo'
+import { isPointInPolygon, polygonToLatLngs, roundCoordinate, toMGRS } from './geo'
+
+describe('roundCoordinate', () => {
+  it('keeps 6 decimal places', () => {
+    expect(roundCoordinate(49.61234567)).toBe(49.612346)
+    expect(roundCoordinate(-30.0000004)).toBe(-30)
+  })
+})
 
 // L-shaped (concave) polygon, so a bounding-box check would give wrong answers
 const lShape: Polygon = {
