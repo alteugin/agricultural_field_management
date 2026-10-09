@@ -3,7 +3,12 @@ import { formatArea } from '../../lib/format'
 import { useFieldsStore } from '../../store/useFieldsStore'
 import { usePointsStore } from '../../store/usePointsStore'
 
-export function FieldList() {
+interface FieldListProps {
+  /** Called after a field is picked, e.g. to close the drawer on tablets. */
+  onSelect?: () => void
+}
+
+export function FieldList({ onSelect }: FieldListProps) {
   const fields = useFieldsStore((state) => state.fields)
   const loadErrors = useFieldsStore((state) => state.loadErrors)
   const activeFieldId = useFieldsStore((state) => state.activeFieldId)
@@ -39,7 +44,10 @@ export function FieldList() {
               <li key={field.id}>
                 <button
                   type="button"
-                  onClick={() => setActiveField(field.id)}
+                  onClick={() => {
+                    setActiveField(field.id)
+                    onSelect?.()
+                  }}
                   aria-current={isActive ? 'true' : undefined}
                   className={`w-full rounded-lg border px-3 py-2.5 text-left transition-colors focus-visible:ring-2 focus-visible:ring-amber-500 focus-visible:outline-none ${
                     isActive

@@ -34,7 +34,7 @@ src/
 6. [x] Додавання точки: перевірка межі поля, форма, WGS84 + MGRS
 7. [x] Іконки за типом, видалення (з undo в тості)
 8. [x] Панель: фільтр за типом, пошук, сортування, активне поле / всі
-9. [ ] Адаптив: desktop sidebar, tablet drawer
+9. [x] Адаптив: desktop sidebar (≥1024px), tablet drawer
 10. [ ] Обробка помилок: ErrorBoundary, MGRS, storage, порожні стани
 11. [ ] README
 
