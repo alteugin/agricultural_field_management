@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { ErrorBoundary } from './components/ErrorBoundary'
+import { ErrorFallback } from './components/ErrorFallback'
 import { MapView } from './components/map/MapView'
 import { FieldList } from './components/panel/FieldList'
 import { PointsPanel } from './components/panel/PointsPanel'
@@ -78,7 +80,19 @@ function App() {
       </aside>
 
       <main className="relative min-w-0 flex-1">
-        <MapView />
+        {/* A map crash shouldn't take the field and point lists down with it */}
+        <ErrorBoundary
+          fallback={(reset) => (
+            <ErrorFallback
+              title="Не вдалося відобразити карту"
+              description="Список полів і точок працює далі. Спробуйте показати карту ще раз."
+              actionLabel="Спробувати ще раз"
+              onAction={reset}
+            />
+          )}
+        >
+          <MapView />
+        </ErrorBoundary>
         {isDrawer && (
           <button
             ref={openButtonRef}

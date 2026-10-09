@@ -3,6 +3,7 @@ import { MapContainer, TileLayer, ZoomControl } from 'react-leaflet'
 import { latLngBounds, svg } from 'leaflet'
 import { polygonToLatLngs } from '../../lib/geo'
 import { useFieldsStore } from '../../store/useFieldsStore'
+import { notify } from '../../store/useToastStore'
 import { ActiveFieldCard } from './ActiveFieldCard'
 import { FieldsLayer } from './FieldsLayer'
 import { FlyToActiveField } from './FlyToActiveField'
@@ -12,6 +13,12 @@ import { PointsLayer } from './PointsLayer'
 // Fallback view when there are no valid fields to frame
 const DEFAULT_CENTER: [number, number] = [49.625, 30.273]
 const DEFAULT_ZOOM = 13
+
+// Offline or blocked tile server: fields and points still work, but say why the map is blank.
+// notify() drops identical messages that are already on screen, so a burst of failed tiles shows one toast.
+const TILE_EVENTS = {
+  tileerror: () => notify('Не вдалося завантажити підкладку карти. Перевірте з’єднання з інтернетом.', 'error'),
+}
 
 export function MapView() {
   const fields = useFieldsStore((state) => state.fields)
@@ -43,6 +50,7 @@ export function MapView() {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
           maxZoom={19}
+          eventHandlers={TILE_EVENTS}
         />
         <ZoomControl position="topright" />
         <FieldsLayer />
