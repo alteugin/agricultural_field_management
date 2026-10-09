@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { MonitoringPoint } from '../types/point'
-import { DEFAULT_POINTS_QUERY, queryPoints } from './points'
+import { DEFAULT_POINTS_QUERY, queryPoints, sanitizePoints } from './points'
 
 function point(overrides: Partial<MonitoringPoint>): MonitoringPoint {
   return {
@@ -53,5 +53,28 @@ describe('queryPoints', () => {
     const copy = [...points]
     queryPoints(points, { ...DEFAULT_POINTS_QUERY, sort: 'oldest' })
     expect(points).toEqual(copy)
+  })
+})
+
+describe('sanitizePoints', () => {
+  it('keeps valid points', () => {
+    expect(sanitizePoints(points)).toEqual({ points, dropped: 0 })
+  })
+
+  it('drops malformed entries from untrusted storage', () => {
+    const stored: unknown[] = [
+      points[0],
+      { ...points[1], type: 'weeds' },
+      { ...points[1], lat: 'NaN' },
+      { ...points[1], createdAt: 'yesterday' },
+      { ...points[1], id: '' },
+      null,
+    ]
+    expect(sanitizePoints(stored)).toEqual({ points: [points[0]], dropped: 5 })
+  })
+
+  it('treats a non-array as empty', () => {
+    expect(sanitizePoints(undefined)).toEqual({ points: [], dropped: 0 })
+    expect(sanitizePoints({ points: [] })).toEqual({ points: [], dropped: 0 })
   })
 })

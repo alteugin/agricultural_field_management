@@ -15,7 +15,7 @@
 src/
   data/fields.json      # 5 полів (GeoJSON FeatureCollection)
   types/                # Field, MonitoringPoint, PointType
-  store/                # useFieldsStore, usePointsStore
+  store/                # useFieldsStore, usePointsStore, useToastStore
   lib/fields.ts         # валідація та нормалізація GeoJSON, площа
   lib/geo.ts            # lng/lat swap, point-in-polygon, MGRS
   lib/points.ts         # filter / search / sort
@@ -28,7 +28,7 @@ src/
 1. [x] Каркас: Vite, TS strict, Tailwind, ESLint, Vitest
 2. [x] Типи + mock-поля
 3. [x] `lib/` + тести
-4. [ ] Стори (persist з версією та безпечним відновленням)
+4. [x] Стори (persist з версією та безпечним відновленням)
 5. [ ] Карта: поля, активне поле, вибір кліком, fitBounds, назва/площа
 6. [ ] Додавання точки: перевірка межі поля, форма, WGS84 + MGRS
 7. [ ] Іконки за типом, видалення

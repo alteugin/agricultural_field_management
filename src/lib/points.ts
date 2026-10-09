@@ -1,4 +1,30 @@
-import type { MonitoringPoint, PointType } from '../types/point'
+import { POINT_TYPES, type MonitoringPoint, type PointType } from '../types/point'
+import { isFiniteNumber, isNonEmptyString, isRecord } from './guards'
+
+export function isPointType(value: unknown): value is PointType {
+  return POINT_TYPES.some((type) => type === value)
+}
+
+export function isMonitoringPoint(value: unknown): value is MonitoringPoint {
+  return (
+    isRecord(value) &&
+    isNonEmptyString(value.id) &&
+    isNonEmptyString(value.fieldId) &&
+    isFiniteNumber(value.lat) &&
+    isFiniteNumber(value.lng) &&
+    isPointType(value.type) &&
+    typeof value.description === 'string' &&
+    typeof value.createdAt === 'string' &&
+    !Number.isNaN(Date.parse(value.createdAt))
+  )
+}
+
+/** Keeps only well-formed points from untrusted data (e.g. localStorage). */
+export function sanitizePoints(value: unknown): { points: MonitoringPoint[]; dropped: number } {
+  if (!Array.isArray(value)) return { points: [], dropped: 0 }
+  const points = value.filter(isMonitoringPoint)
+  return { points, dropped: value.length - points.length }
+}
 
 export type SortOrder = 'newest' | 'oldest'
 

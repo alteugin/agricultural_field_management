@@ -1,6 +1,7 @@
 import { area } from '@turf/area'
 import type { Polygon, Position } from 'geojson'
 import type { Field } from '../types/field'
+import { isFiniteNumber, isNonEmptyString, isRecord } from './guards'
 
 const SQ_METERS_PER_HECTARE = 10_000
 
@@ -10,22 +11,12 @@ export interface ParseFieldsResult {
   errors: string[]
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
-
-function isNonEmptyString(value: unknown): value is string {
-  return typeof value === 'string' && value.trim().length > 0
-}
-
 function isPosition(value: unknown): value is Position {
   if (!Array.isArray(value) || value.length < 2) return false
   const [lng, lat] = value
   return (
-    typeof lng === 'number' &&
-    typeof lat === 'number' &&
-    Number.isFinite(lng) &&
-    Number.isFinite(lat) &&
+    isFiniteNumber(lng) &&
+    isFiniteNumber(lat) &&
     lng >= -180 &&
     lng <= 180 &&
     lat >= -90 &&
